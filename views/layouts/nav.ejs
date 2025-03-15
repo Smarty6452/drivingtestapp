@@ -1,0 +1,52 @@
+<!-- views/layouts/nav.ejs -->
+<nav class="navbar navbar-expand-lg shadow-lg fixed-top" id="mainNav" style="background: linear-gradient(135deg, #0085A1, #9d78e3);">
+  <div class="container px-4 px-lg-5">
+    <a class="navbar-brand text-white font-weight-bold" href="/">DriveTest Booking Kiosk</a>
+    <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ms-auto btn-container d-flex align-items-center" >
+        <% if (user) { %>
+          <% if (user.userType !== 'Driver') { %>
+            <li class="nav-item">
+              <a class="nav-link custom-btn" href="/dashboard?userId=<%= user._id %>">
+                <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+              </a>
+            </li>
+          <% } %>
+          <% if (user.userType === 'Driver') { %>
+            <li class="nav-item">
+              <form action="/g2" method="POST" class="d-inline">
+                <input type="hidden" name="userId" value="<%= user._id %>">
+                <button type="submit" class="nav-link custom-btn">
+                  <i class="fas fa-car mr-2"></i> G2 Test
+                </button>
+              </form>
+            </li>
+            <li class="nav-item">
+              <form action="/g" method="POST" class="d-inline">
+                <input type="hidden" name="userId" value="<%= user._id %>">
+                <button type="submit" class="nav-link custom-btn">
+                  <i class="fas fa-road mr-2"></i> G Test
+                </button>
+              </form>
+            </li>
+          <% } %>
+          <li class="nav-item">
+            
+            <a class="nav-link custom-btn" href="/login" style="border-color: #874519; color: #36167b;">
+              <i class="fas fa-sign-out-alt mr-2"></i> Logout
+            </a>
+          </li>
+        <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link custom-btn" href="/login" style="border-color: #874519; color: #36167b;">
+              <i class="fas fa-sign-in-alt mr-2"></i> Login
+            </a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>

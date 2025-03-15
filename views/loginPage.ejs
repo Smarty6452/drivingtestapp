@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('layouts/header', { title: 'G Test Login' }) %>
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Include styles.css -->
+  </head>
+  <style>
+    /* Login Form Specific Styles */
+.login-form-container {
+    max-width: 400px;
+    margin: auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.login-form-toggle {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.login-form-toggle button {
+    width: 48%;
+    border: none;
+    padding: 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.login-form-toggle button.active-btn {
+    background: #007bff;
+    color: white;
+}
+
+.login-form-toggle button:not(.active-btn) {
+    background: #e9ecef;
+    color: #333;
+}
+
+.login-form-toggle button:not(.active-btn):hover {
+    background: #d1d5d8;
+}
+
+.login-form.hidden {
+    display: none;
+}
+
+.login-form-floating {
+    position: relative; /* Needed for absolute positioning of label */
+    margin-bottom: 1.5rem;
+}
+
+.login-form-control {
+    width: 100%;
+    padding: 14px 10px 10px; /* Extra top padding to avoid label overlap */
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.login-form-control:hover {
+    border-color: #80bdff;
+}
+
+.login-form-control:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: none; /* Remove shadow from styles.css */
+}
+
+.login-form-floating label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 0.9rem;
+    color: #6c757d;
+    padding: 0 5px;
+    background: white; /* Covers input border when inside */
+    transition: all 0.3s ease;
+    pointer-events: none; /* Prevents label from blocking input clicks */
+}
+
+/* Move label to top when input is focused or has content */
+.login-form-control:focus + label,
+.login-form-control:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 0.75rem; /* Smaller size when moved up */
+    color: #007bff;
+    transform: translateY(-100%); /* Adjust to sit above input */
+}
+
+.login-btn-primary {
+    background: #007bff;
+    border: none;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.login-btn-primary:hover {
+    background: #0056b3;
+    transform: none; /* Override transform from styles.css */
+    box-shadow: none; /* Remove shadow from styles.css */
+}
+
+.login-alert-danger {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+  </style>
+  <body>
+    <%- include('layouts/nav', { user: user }) %>
+
+    <div class="container py-5 mt-5">
+      <div class="login-form-container form-container">
+        <!-- Toggle Buttons -->
+        <div class="login-form-toggle form-toggle">
+          <button id="showSignup" aria-label="Show Signup Form">Sign Up</button>
+          <button id="showLogin" class="active-btn" aria-label="Show Login Form">Login</button>
+        </div>
+
+        <!-- Error Message -->
+        <% if (error) { %>
+          <div class="login-alert-danger alert-danger text-center mb-3" id="errorMsg"><%= error %></div>
+        <% } %>
+
+        <!-- Signup Form -->
+        <form id="signupForm" class="login-form hidden" action="/signup" method="POST">
+          <h3 class="text-center">Sign Up</h3>
+          <div class="login-form-floating form-floating mb-3">
+            <input class="login-form-control form-control" id="signupUsername" name="username" type="text" placeholder=" " required>
+            <label for="signupUsername">Username</label>
+          </div>
+          <div class="login-form-floating form-floating mb-3">
+            <input class="login-form-control form-control" id="signupPassword" name="password" type="password" placeholder=" " required>
+            <label for="signupPassword">Password</label>
+          </div>
+          <div class="login-form-floating form-floating mb-3">
+            <input class="login-form-control form-control" id="repeatedPassword" name="repeatedPassword" type="password" placeholder=" " required>
+            <label for="repeatedPassword">Repeat Password</label>
+          </div>
+          <div class="login-form-floating form-floating mb-4">
+            <select class="login-form-control form-control" id="userType" name="userType" required>
+              <option value="" disabled selected>Select User Type</option>
+              <option value="Driver">Driver</option>
+              <option value="Examiner">Examiner</option>
+              <option value="Admin">Admin</option>
+            </select>
+            <label for="userType">User Type</label>
+          </div>
+          <button class="login-btn-primary btn-primary rounded-2 w-100" type="submit">Sign Up</button>
+        </form>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="login-form" action="/login" method="POST">
+          <h3 class="text-center">Login</h3>
+          <div class="login-form-floating form-floating mb-3">
+            <input class="login-form-control form-control" id="loginUsername" name="username" type="text" placeholder=" " required>
+            <label for="loginUsername">Username</label>
+          </div>
+          <div class="login-form-floating form-floating mb-4">
+            <input class="login-form-control form-control" id="loginPassword" name="password" type="password" placeholder=" " required>
+            <label for="loginPassword">Password</label>
+          </div>
+          <button class="login-btn-primary btn-primary w-100 rounded-2" type="submit">Login</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById("showSignup").addEventListener("click", function() {
+        document.getElementById("signupForm").classList.remove("hidden");
+        document.getElementById("loginForm").classList.add("hidden");
+        this.classList.add("active-btn");
+        document.getElementById("showLogin").classList.remove("active-btn");
+      });
+
+      document.getElementById("showLogin").addEventListener("click", function() {
+        document.getElementById("loginForm").classList.remove("hidden");
+        document.getElementById("signupForm").classList.add("hidden");
+        this.classList.add("active-btn");
+        document.getElementById("showSignup").classList.remove("active-btn");
+      });
+    </script>
+
+    <%- include('layouts/footer') %>
+    <%- include('layouts/scripts') %>
+  </body>
+</html>

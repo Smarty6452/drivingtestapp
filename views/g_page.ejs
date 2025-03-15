@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('layouts/header', { title: 'G Test Details' }) %>
+    <link rel="stylesheet" href="/css/styles.css">
+  </head>
+  <body>
+    <%- include('layouts/nav', { user: user }) %>
+
+    <header class="masthead" style="background-image: url('/img/login-bg.jpg')">
+      <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="site-heading">
+              <h1>G Test Details</h1>
+              <span class="subheading">Your registration details</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container px-4 px-lg-5">
+      <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+          <% if (user.firstname === 'default') { %>
+            <p class="text-danger">Please enter your details on the G2 page first.</p>
+            <a href="/g2" class="btn btn-primary">Go to G2 Page</a>
+          <% } else { %>
+            <h4>Registration Details:</h4>
+            <p><strong>First Name:</strong> <%= user.firstname %></p>
+            <p><strong>Last Name:</strong> <%= user.lastname %></p>
+            <p><strong>Age:</strong> <%= user.Age %></p>
+            <p><strong>License Number:</strong> <%= user.licenseNumber.slice(-4).padStart(user.licenseNumber.length, '*') %></p>
+
+            <h4 class="mt-4">Car Information</h4>
+            <form id="updateCarForm" action="/g/update" method="POST" class="form-container">
+              <input type="hidden" name="userId" value="<%= user._id %>">
+              <div class="form-floating">
+                <input class="form-control" id="carMake" name="make" type="text" value="<%= user.car_details.make %>" required placeholder=" ">
+                <label for="carMake">Car Make</label>
+              </div>
+              <div class="form-floating">
+                <input class="form-control" id="carModel" name="model" type="text" value="<%= user.car_details.model %>" required placeholder=" ">
+                <label for="carModel">Car Model</label>
+              </div>
+              <div class="form-floating">
+                <input class="form-control" id="carYear" name="year" type="number" value="<%= user.car_details.year %>" required placeholder=" ">
+                <label for="carYear">Car Year</label>
+              </div>
+              <div class="form-floating">
+                <input class="form-control" id="carPlate" name="platno" type="text" value="<%= user.car_details.platno %>" required placeholder=" ">
+                <label for="carPlate">Car Plate Number</label>
+              </div>
+              <button class="btn btn-primary text-uppercase" type="submit">Update Car Details</button>
+            </form>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <%- include('layouts/footer') %>
+    <%- include('layouts/scripts') %>
+  </body>
+</html>

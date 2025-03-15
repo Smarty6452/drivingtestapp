@@ -1,0 +1,234 @@
+<!-- views/dashboard.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('layouts/header', { title: 'Dashboard' }) %>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+      /* Dashboard-Specific Styles */
+      .dashboard-masthead {
+          background-size: cover;
+          background-position: center;
+          padding: 100px 0;
+          color: white;
+          text-align: center;
+          position: relative;
+          overflow: hidden;
+          animation: fadeIn 1s ease-in-out; /* Subtle fade-in effect */
+      }
+
+      .dashboard-masthead::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.4); /* Slightly darker overlay for contrast */
+          z-index: 1;
+      }
+
+      .dashboard-site-heading {
+          position: relative;
+          z-index: 2;
+      }
+
+      .dashboard-site-heading h1 {
+          font-size: 2.75rem; /* Slightly larger for emphasis */
+          font-weight: 700;
+          margin-bottom: 1rem;
+          text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+          letter-spacing: 0.5px; /* Better readability */
+      }
+
+      .dashboard-container {
+          padding-top: 2.5rem;
+          padding-bottom: 5rem; /* More breathing room */
+      }
+
+      .dashboard-actions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px; /* Increased spacing */
+          justify-content: center;
+          align-items: center;
+          margin-top: 2.5rem;
+      }
+
+      .dashboard-btn-primary {
+          background: linear-gradient(45deg, #007bff, #00b4ff);
+          border: none;
+          padding: 14px 30px; /* Slightly larger */
+          font-size: 1.1rem;
+          font-weight: 600;
+          border-radius: 30px; /* More rounded */
+          color: white;
+          text-transform: uppercase;
+          transition: all 0.3s ease;
+          text-decoration: none;
+          position: relative;
+          overflow: hidden;
+      }
+
+      .dashboard-btn-primary::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 0;
+          height: 0;
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 50%;
+          transform: translate(-50%, -50%);
+          transition: width 0.4s ease, height 0.4s ease;
+      }
+
+      .dashboard-btn-primary:hover::after {
+          width: 200%;
+          height: 200%;
+      }
+
+      .dashboard-btn-primary:hover {
+          background: linear-gradient(45deg, #0056b3, #009bff);
+          transform: translateY(-3px);
+          box-shadow: 0 6px 18px rgba(0, 123, 255, 0.5);
+          color: white;
+      }
+
+      .dashboard-btn-primary:focus {
+          outline: 3px solid #80bdff; /* Accessibility */
+          outline-offset: 2px;
+      }
+
+      .dashboard-btn-secondary {
+          background: linear-gradient(45deg, #6c757d, #adb5bd);
+          border: none;
+          padding: 14px 30px;
+          font-size: 1.1rem;
+          font-weight: 600;
+          border-radius: 30px;
+          color: white;
+          text-transform: uppercase;
+          transition: all 0.3s ease;
+          text-decoration: none;
+          position: relative;
+          overflow: hidden;
+      }
+
+      .dashboard-btn-secondary::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 0;
+          height: 0;
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 50%;
+          transform: translate(-50%, -50%);
+          transition: width 0.4s ease, height 0.4s ease;
+      }
+
+      .dashboard-btn-secondary:hover::after {
+          width: 200%;
+          height: 200%;
+      }
+
+      .dashboard-btn-secondary:hover {
+          background: linear-gradient(45deg, #5a6268, #959ca3);
+          transform: translateY(-3px);
+          box-shadow: 0 6px 18px rgba(108, 117, 125, 0.5);
+          color: white;
+      }
+
+      .dashboard-btn-secondary:focus {
+          outline: 3px solid #adb5bd; /* Accessibility */
+          outline-offset: 2px;
+      }
+
+      .dashboard-message {
+          font-size: 1.2rem; /* Slightly larger */
+          color: #333;
+          background: #f8f9fa;
+          padding: 20px;
+          border-radius: 10px;
+          text-align: center;
+          margin-bottom: 2rem;
+          border: 1px solid #e9ecef; /* Subtle border */
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+      }
+
+      /* Animation Keyframes */
+      @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+      }
+
+      /* Responsive Adjustments */
+      @media (max-width: 768px) {
+          .dashboard-site-heading h1 {
+              font-size: 2rem;
+          }
+
+          .dashboard-container {
+              padding-top: 2rem;
+              padding-bottom: 3rem;
+          }
+
+          .dashboard-actions {
+              flex-direction: column;
+              gap: 15px;
+          }
+
+          .dashboard-btn-primary,
+          .dashboard-btn-secondary {
+              width: 100%;
+              max-width: 280px; /* Slightly wider on mobile */
+              padding: 12px 20px;
+          }
+
+          .dashboard-message {
+              font-size: 1rem;
+              padding: 15px;
+          }
+      }
+
+      @media (max-width: 576px) {
+          .dashboard-site-heading h1 {
+              font-size: 1.75rem;
+          }
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('layouts/nav', { user: user }) %>
+    <header class="dashboard-masthead masthead" style="background-image: url('img/login-bg.jpg')">
+      <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="dashboard-site-heading site-heading">
+              <h1>Welcome, <%= user.username %></h1>
+              <!-- <span class="subheading">Your Dashboard</span> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="dashboard-container container px-4 px-lg-5">
+      <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+          <div class="dashboard-actions">
+            <% if (user.userType === 'Driver') { %>
+              <a href="/g2?userId=<%= user._id %>" class="dashboard-btn-primary btn btn-primary">G2 Test</a>
+              <a href="/g?userId=<%= user._id %>" class="dashboard-btn-primary btn btn-primary">G Test</a>
+            <% } else { %>
+              <p class="dashboard-message">Welcome, <%= user.userType %>! G2 and G Test pages are only available for Drivers.</p>
+            <% } %>
+            <a href="/login" class="dashboard-btn-secondary btn btn-secondary">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include('layouts/footer') %>
+    <%- include('layouts/scripts') %>
+  </body>
+</html>

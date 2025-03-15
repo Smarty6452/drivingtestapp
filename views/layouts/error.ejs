@@ -1,0 +1,31 @@
+<!-- views/error.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('layouts/header', { title: 'Error' }) %>
+  </head>
+  <body>
+    <%- include('layouts/nav', { user: user }) %>
+    <header class="masthead" style="background-image: url('img/login-bg.jpg')">
+      <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="site-heading">
+              <h1>Error</h1>
+              <span class="subheading"><%= message %></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="container px-4 px-lg-5">
+      <% if (user) { %>
+        <a href="/dashboard?userId=<%= user._id %>" class="btn btn-primary">Back to Dashboard</a>
+      <% } else { %>
+        <a href="/login" class="btn btn-primary">Back to Login</a>
+      <% } %>
+    </div>
+    <%- include('layouts/footer') %>
+    <%- include('layouts/scripts') %>
+  </body>
+</html>
