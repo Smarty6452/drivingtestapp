@@ -4,6 +4,12 @@ const mongoose = require("mongoose");
 const app = express();
 const PORT = 4000;
 
+const path = require("path");
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+
+app.use(express.static(path.join(__dirname, "public")));
+
 // Import controllers
 const loginController = require("./controllers/loginController");
 const signupController = require("./controllers/signupController");
@@ -41,9 +47,13 @@ app.post("/g", isAuthenticatedDriver, (req, res) => res.render("g_page", { user:
 app.post("/g2/save", isAuthenticatedDriver, registerController);
 app.post("/g/update", isAuthenticatedDriver, updateCarController);
 
-app.use((req, res, next) => {
+app.all("*", (req, res) => {
   res.status(404).render("404", { user: req.user || null });
 });
+
+// app.use((req, res, next) => {
+//   res.status(404).render("404", { user: req.user || null });
+// });
 
 // Start the server
 app.listen(PORT, () => {
