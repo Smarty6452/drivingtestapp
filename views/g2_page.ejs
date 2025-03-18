@@ -3,6 +3,133 @@
   <head>
     <%- include('layouts/header', { title: 'G2 Test Registration' }) %>
     <link rel="stylesheet" href="/css/styles.css">
+    <style>
+      /* G2 Form Specific Styles */
+      .g2-form-container {
+        max-width: 800px; 
+        margin: 2rem auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Grid container for side-by-side layout */
+      .g2-form-container form {
+        display: grid;
+        grid-template-columns: 1fr; /* Default: single column for mobile */
+        gap: 2rem; /* Space between sections */
+      }
+
+      /* Side-by-side for large devices (lg and up) */
+      @media (min-width: 992px) {
+        .g2-form-container form {
+          grid-template-columns: 1fr 1fr; /* Two columns for lg devices */
+        }
+      }
+
+      /* Ensure fieldsets take full width of their grid cell */
+      fieldset {
+        border: none;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem; /* Space between inputs */
+      }
+
+      /* Legend styling */
+      legend {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 1rem;
+      }
+
+      /* Floating label styles */
+      .g2-form-floating {
+        position: relative;
+      }
+
+      .g2-form-control {
+        width: 100%;
+        padding: 14px 10px 10px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+      }
+
+      .g2-form-control:hover {
+        border-color: #80bdff;
+      }
+
+      .g2-form-control:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.3); /* Subtle glow on focus */
+      }
+
+      .g2-form-floating label {
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(-50%);
+        font-size: 0.9rem;
+        color: #6c757d;
+        padding: 0 5px;
+        background: white;
+        transition: all 0.3s ease;
+        pointer-events: none;
+      }
+
+      .g2-form-control:focus + label,
+      .g2-form-control:not(:placeholder-shown) + label {
+        top: 0;
+        font-size: 0.75rem;
+        color: #007bff;
+        transform: translateY(-100%);
+      }
+
+      /* Button styling */
+      .g2-btn-primary {
+        background: #007bff;
+        border: none;
+        padding: 12px;
+        font-size: 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+        width: 100%;
+      }
+
+      .g2-btn-primary:hover {
+        background: #0056b3;
+        transform: translateY(-2px); 
+      }
+
+      .g2-btn-primary:active {
+        transform: translateY(0); 
+      }
+
+     
+      @media (min-width: 992px) {
+        .g2-btn-primary {
+          grid-column: 1 / -1; 
+          max-width: 300px;
+          margin: 0 auto; 
+        }
+      }
+
+      /* Alert styling */
+      .form-alert-danger {
+        background: #f8d7da;
+        color: #721c24;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
     <%- include('layouts/nav', { user: user }) %>
@@ -21,67 +148,75 @@
     <div class="container px-4 px-lg-5">
       <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
-          <p>Fill out the form below to register for your G2 Test.</p>
-          <% if (error) { %>
-            <p class="text-danger"><%= error %></p>
-          <% } %>
-          <div class="my-5">
-            <form action="/g2/save" method="POST" class="form-container side-by-side">
+          <div class="g2-form-container">
+            <% if (error) { %>
+              <div class="form-alert-danger"><%= error %></div>
+            <% } %>
+            <form action="/g2/save" method="POST">
               <input type="hidden" name="userId" value="<%= user._id %>">
               <fieldset>
                 <legend>Personal Information</legend>
-                <div class="form-floating">
-                  <input class="form-control" id="firstName" name="firstName" type="text" 
-                    required value="<%= user.firstname !== 'default' ? user.firstname : '' %>" placeholder=" ">
+                <div class="g2-form-floating">
+                  <input class="g2-form-control" id="firstName" name="firstName" type="text" required value="<%= user.firstname !== 'default' ? user.firstname : '' %>" placeholder=" ">
                   <label for="firstName">First Name</label>
                 </div>
-                <div class="form-floating">
-                  <input class="form-control" id="lastName" name="lastName" type="text" 
-                    required value="<%= user.lastname !== 'default' ? user.lastname : '' %>" placeholder=" ">
+                <div class="g2-form-floating">
+                  <input class="g2-form-control" id="lastName" name="lastName" type="text" required value="<%= user.lastname !== 'default' ? user.lastname : '' %>" placeholder=" ">
                   <label for="lastName">Last Name</label>
                 </div>
-                <div class="form-floating">
-                  <input class="form-control" id="licenseNumber" name="licenseNumber" type="text" 
-                    required value="<%= user.licenseNumber !== 'default' ? user.licenseNumber : '' %>" placeholder=" ">
+                <div class="g2-form-floating">
+                  <input class="g2-form-control" id="licenseNumber" name="licenseNumber" type="text" required value="<%= user.licenseNumber !== 'default' ? user.licenseNumber : '' %>" placeholder=" ">
                   <label for="licenseNumber">License Number</label>
-                  <small class="form-text text-muted">Must be 8 alphanumeric characters.</small>
                 </div>
-                <div class="form-floating">
-                  <input class="form-control" id="age" name="age" type="number" 
-                    required min="18" value="<%= user.Age !== 0 ? user.Age : '' %>" placeholder=" ">
+                <div class="g2-form-floating">
+                  <input class="g2-form-control" id="age" name="age" type="number" required min="18" value="<%= user.Age !== 0 ? user.Age : '' %>" placeholder=" ">
                   <label for="age">Age</label>
                 </div>
               </fieldset>
+
               <fieldset>
                 <legend>Car Details</legend>
-                <div class="form-floating">
-                  <input class="form-control" id="carMake" name="carMake" type="text" 
-                    required value="<%= user.car_details.make !== 'default' ? user.car_details.make : '' %>" placeholder=" ">
+                <div class="g2-form-floating">
+                  <input class="g2-form-control" id="carMake" name="carMake" type="text" required value="<%= user.car_details.make !== 'default' ? user.car_details.make : '' %>" placeholder=" ">
                   <label for="carMake">Car Make</label>
                 </div>
-                <div class="form-floating">
-                  <input class="form-control" id="carModel" name="carModel" type="text" 
-                    required value="<%= user.car_details.model !== 'default' ? user.car_details.model : '' %>" placeholder=" ">
+                <div class="g2-form-floating">
+                  <input class="g2-form-control" id="carModel" name="carModel" type="text" required value="<%= user.car_details.model !== 'default' ? user.car_details.model : '' %>" placeholder=" ">
                   <label for="carModel">Car Model</label>
                 </div>
-                <div class="form-floating">
-                  <input class="form-control" id="carYear" name="carYear" type="number" 
-                    required value="<%= user.car_details.year !== 0 ? user.car_details.year : '' %>" placeholder=" ">
+                <div class="g2-form-floating">
+                  <input class="g2-form-control" id="carYear" name="carYear" type="number" required value="<%= user.car_details.year !== 0 ? user.car_details.year : '' %>" placeholder=" ">
                   <label for="carYear">Car Year</label>
                 </div>
-                <div class="form-floating">
-                  <input class="form-control" id="carPlate" name="carPlate" type="text" 
-                    required value="<%= user.car_details.platno !== 'default' ? user.car_details.platno : '' %>" placeholder=" ">
+                <div class="g2-form-floating">
+                  <input class="g2-form-control" id="carPlate" name="carPlate" type="text" required value="<%= user.car_details.platno !== 'default' ? user.car_details.platno : '' %>" placeholder=" ">
                   <label for="carPlate">Car Plate Number</label>
                 </div>
               </fieldset>
-              <button class="btn btn-primary text-uppercase mt-2" type="submit">Submit</button>
+
+              <button class="g2-btn-primary" type="submit" style="color: #fff;">Submit</button>
             </form>
           </div>
         </div>
       </div>
     </div>
+
     <%- include('layouts/footer') %>
     <%- include('layouts/scripts') %>
+    
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const successMsg = urlParams.get('success');
+      if (successMsg) {
+        Toastify({
+          text: successMsg,
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "#28a745",
+          stopOnFocus: true,
+        }).showToast();
+      }
+    </script>
   </body>
 </html>

@@ -2,200 +2,335 @@
 <html lang="en">
   <head>
     <%- include('layouts/header', { title: 'G Test Login' }) %>
-    <link rel="stylesheet" href="/css/styles.css"> <!-- Include styles.css -->
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      /* Login/Signup Form Specific Styles */
+      .auth-form-container {
+        max-width: 400px;
+        margin: 2rem auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Toggle Buttons */
+      .auth-form-toggle {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .auth-form-toggle button {
+        width: 50%;
+        border: none;
+        padding: 12px;
+        font-size: 1rem;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+      }
+
+      .auth-form-toggle button.active-btn {
+        background: #007bff;
+        color: white;
+      }
+
+      .auth-form-toggle button:not(.active-btn) {
+        background: #e9ecef;
+        color: #333;
+      }
+
+      .auth-form-toggle button:not(.active-btn):hover {
+        background: #d1d5d8;
+        transform: translateY(-2px);
+      }
+
+      .auth-form.hidden {
+        display: none;
+      }
+
+      /* Form Heading with Animation */
+      .auth-form h3 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        animation: slideIn 0.5s ease-out forwards;
+        transition: transform 0.3s ease, color 0.3s ease;
+      }
+
+      .auth-form h3:hover {
+        transform: scale(1.05);
+        color: #007bff;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(-20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      /* Floating Input Styles */
+      .auth-form-floating {
+        position: relative;
+        margin-bottom: 1.5rem;
+      }
+
+      .auth-form-control {
+        width: 100%;
+        padding: 14px 10px 10px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+      }
+
+      .auth-form-control:hover {
+        border-color: #80bdff;
+      }
+
+      .auth-form-control:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+      }
+
+      .auth-form-floating label {
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(-50%);
+        font-size: 0.9rem;
+        color: #6c757d;
+        padding: 0 5px;
+        background: white;
+        transition: all 0.3s ease;
+        pointer-events: none;
+      }
+
+      .auth-form-control:focus + label,
+      .auth-form-control:not(:placeholder-shown) + label {
+        top: 0;
+        font-size: 0.75rem;
+        color: #007bff;
+        transform: translateY(-100%);
+      }
+
+      /* Button Styling with Icons */
+      .auth-btn-primary {
+        background: #007bff;
+        color: #fff;
+        border: none;
+        padding: 12px;
+        font-size: 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      .auth-btn-primary:hover {
+        background: #0056b3;
+        transform: translateY(-2px);
+      }
+
+      .auth-btn-primary:active {
+        transform: translateY(0);
+      }
+
+      .auth-btn-primary i {
+        font-size: 1.2rem;
+      }
+
+      /* Alert Styling */
+      .auth-alert-danger {
+        background: #f8d7da;
+        color: #721c24;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+    </style>
   </head>
-  <style>
-    /* Login Form Specific Styles */
-.login-form-container {
-    max-width: 400px;
-    margin: auto;
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.login-form-toggle {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1.5rem;
-}
-
-.login-form-toggle button {
-    width: 48%;
-    border: none;
-    padding: 12px;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background 0.3s ease, color 0.3s ease;
-}
-
-.login-form-toggle button.active-btn {
-    background: #007bff;
-    color: white;
-}
-
-.login-form-toggle button:not(.active-btn) {
-    background: #e9ecef;
-    color: #333;
-}
-
-.login-form-toggle button:not(.active-btn):hover {
-    background: #d1d5d8;
-}
-
-.login-form.hidden {
-    display: none;
-}
-
-.login-form-floating {
-    position: relative; /* Needed for absolute positioning of label */
-    margin-bottom: 1.5rem;
-}
-
-.login-form-control {
-    width: 100%;
-    padding: 14px 10px 10px; /* Extra top padding to avoid label overlap */
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-}
-
-.login-form-control:hover {
-    border-color: #80bdff;
-}
-
-.login-form-control:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: none; /* Remove shadow from styles.css */
-}
-
-.login-form-floating label {
-    position: absolute;
-    top: 50%;
-    left: 10px;
-    transform: translateY(-50%);
-    font-size: 0.9rem;
-    color: #6c757d;
-    padding: 0 5px;
-    background: white; /* Covers input border when inside */
-    transition: all 0.3s ease;
-    pointer-events: none; /* Prevents label from blocking input clicks */
-}
-
-/* Move label to top when input is focused or has content */
-.login-form-control:focus + label,
-.login-form-control:not(:placeholder-shown) + label {
-    top: 0;
-    font-size: 0.75rem; /* Smaller size when moved up */
-    color: #007bff;
-    transform: translateY(-100%); /* Adjust to sit above input */
-}
-
-.login-btn-primary {
-    background: #007bff;
-    border: none;
-    padding: 12px;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.login-btn-primary:hover {
-    background: #0056b3;
-    transform: none; /* Override transform from styles.css */
-    box-shadow: none; /* Remove shadow from styles.css */
-}
-
-.login-alert-danger {
-    background: #f8d7da;
-    color: #721c24;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 1.5rem;
-    text-align: center;
-}
-  </style>
   <body>
     <%- include('layouts/nav', { user: user }) %>
 
-    <div class="container py-5 mt-5">
-      <div class="login-form-container form-container">
+    <header
+      class="masthead"
+      style="background-image: url('/img/login-bg.jpg'); height: 10vh"
+    >
+      <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="site-heading">
+              <h1>G Test Login</h1>
+              <span class="subheading"
+                >Login to start your test registration</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container px-5">
+      <div class="auth-form-container">
         <!-- Toggle Buttons -->
-        <div class="login-form-toggle form-toggle">
+        <div class="auth-form-toggle">
           <button id="showSignup" aria-label="Show Signup Form">Sign Up</button>
-          <button id="showLogin" class="active-btn" aria-label="Show Login Form">Login</button>
+          <button
+            id="showLogin"
+            class="active-btn"
+            aria-label="Show Login Form"
+          >
+            Login
+          </button>
         </div>
 
-        <!-- Error Message -->
-        <% if (error) { %>
-          <div class="login-alert-danger alert-danger text-center mb-3" id="errorMsg"><%= error %></div>
-        <% } %>
+        <!-- Login Form -->
+        <div class="auth-form" id="loginForm">
+          <h3>Login</h3>
+          <form action="/login" method="POST">
+            <div class="auth-form-floating">
+              <input
+                class="auth-form-control"
+                id="loginUsername"
+                name="username"
+                type="text"
+                placeholder=" "
+                required
+              />
+              <label for="loginUsername">Username</label>
+            </div>
+            <div class="auth-form-floating">
+              <input
+                class="auth-form-control"
+                id="loginPassword"
+                name="password"
+                type="password"
+                placeholder=" "
+                required
+              />
+              <label for="loginPassword">Password</label>
+            </div>
+            <button class="auth-btn-primary" type="submit">
+              <i class="fa fa-sign-in-alt"></i> Login
+            </button>
+          </form>
+        </div>
 
         <!-- Signup Form -->
-        <form id="signupForm" class="login-form hidden" action="/signup" method="POST">
-          <h3 class="text-center">Sign Up</h3>
-          <div class="login-form-floating form-floating mb-3">
-            <input class="login-form-control form-control" id="signupUsername" name="username" type="text" placeholder=" " required>
-            <label for="signupUsername">Username</label>
-          </div>
-          <div class="login-form-floating form-floating mb-3">
-            <input class="login-form-control form-control" id="signupPassword" name="password" type="password" placeholder=" " required>
-            <label for="signupPassword">Password</label>
-          </div>
-          <div class="login-form-floating form-floating mb-3">
-            <input class="login-form-control form-control" id="repeatedPassword" name="repeatedPassword" type="password" placeholder=" " required>
-            <label for="repeatedPassword">Repeat Password</label>
-          </div>
-          <div class="login-form-floating form-floating mb-4">
-            <select class="login-form-control form-control" id="userType" name="userType" required>
-              <option value="" disabled selected>Select User Type</option>
-              <option value="Driver">Driver</option>
-              <option value="Examiner">Examiner</option>
-              <option value="Admin">Admin</option>
-            </select>
-            <label for="userType">User Type</label>
-          </div>
-          <button class="login-btn-primary btn-primary rounded-2 w-100" type="submit">Sign Up</button>
-        </form>
-
-        <!-- Login Form -->
-        <form id="loginForm" class="login-form" action="/login" method="POST">
-          <h3 class="text-center">Login</h3>
-          <div class="login-form-floating form-floating mb-3">
-            <input class="login-form-control form-control" id="loginUsername" name="username" type="text" placeholder=" " required>
-            <label for="loginUsername">Username</label>
-          </div>
-          <div class="login-form-floating form-floating mb-4">
-            <input class="login-form-control form-control" id="loginPassword" name="password" type="password" placeholder=" " required>
-            <label for="loginPassword">Password</label>
-          </div>
-          <button class="login-btn-primary btn-primary w-100 rounded-2" type="submit">Login</button>
-        </form>
+        <div class="auth-form hidden" id="signupForm">
+          <h3>Sign Up</h3>
+          <form action="/signup" method="POST">
+            <div class="auth-form-floating">
+              <input
+                class="auth-form-control"
+                id="signupUsername"
+                name="username"
+                type="text"
+                required
+                placeholder=" "
+              />
+              <label for="signupUsername">Username</label>
+            </div>
+            <div class="auth-form-floating">
+              <input
+                class="auth-form-control"
+                id="signupPassword"
+                name="password"
+                type="password"
+                required
+                placeholder=" "
+              />
+              <label for="signupPassword">Password</label>
+            </div>
+            <div class="auth-form-floating">
+              <input
+                class="auth-form-control"
+                id="repeatedPassword"
+                name="repeatedPassword"
+                type="password"
+                required
+                placeholder=" "
+              />
+              <label for="repeatedPassword">Repeat Password</label>
+            </div>
+            <div class="auth-form-floating">
+              <select
+                class="auth-form-control"
+                id="userType"
+                name="userType"
+                required
+              >
+                <option value="" disabled selected>Select User Type</option>
+                <option value="Driver">Driver</option>
+                <option value="Examiner">Examiner</option>
+                <option value="Admin">Admin</option>
+              </select>
+              <!-- <label for="userType">User Type</label> -->
+            </div>
+            <button class="auth-btn-primary" type="submit">
+              <i class="fa fa-user-plus"></i> Sign Up
+            </button>
+          </form>
+        </div>
       </div>
     </div>
-
-    <script>
-      document.getElementById("showSignup").addEventListener("click", function() {
-        document.getElementById("signupForm").classList.remove("hidden");
-        document.getElementById("loginForm").classList.add("hidden");
-        this.classList.add("active-btn");
-        document.getElementById("showLogin").classList.remove("active-btn");
-      });
-
-      document.getElementById("showLogin").addEventListener("click", function() {
-        document.getElementById("loginForm").classList.remove("hidden");
-        document.getElementById("signupForm").classList.add("hidden");
-        this.classList.add("active-btn");
-        document.getElementById("showSignup").classList.remove("active-btn");
-      });
-    </script>
-
-    <%- include('layouts/footer') %>
     <%- include('layouts/scripts') %>
+    <script>
+      // Toggle logic
+      document
+        .getElementById("showSignup")
+        .addEventListener("click", function () {
+          document.getElementById("signupForm").classList.remove("hidden");
+          document.getElementById("loginForm").classList.add("hidden");
+          this.classList.add("active-btn");
+          document.getElementById("showLogin").classList.remove("active-btn");
+        });
+
+      document
+        .getElementById("showLogin")
+        .addEventListener("click", function () {
+          document.getElementById("loginForm").classList.remove("hidden");
+          document.getElementById("signupForm").classList.add("hidden");
+          this.classList.add("active-btn");
+          document.getElementById("showSignup").classList.remove("active-btn");
+        });
+
+      // Toastify logic for error
+      const urlParams = new URLSearchParams(window.location.search);
+      const errorMsg = urlParams.get("error");
+      if (errorMsg) {
+        Toastify({
+          text: errorMsg,
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "#dc3545",
+          stopOnFocus: true,
+        }).showToast();
+      }
+    </script>
   </body>
 </html>

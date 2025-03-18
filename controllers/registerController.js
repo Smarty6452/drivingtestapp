@@ -1,4 +1,3 @@
-// controllers/registerController.js
 const User = require("../models/User");
 
 module.exports = async (req, res) => {
@@ -16,12 +15,13 @@ module.exports = async (req, res) => {
       return res.render("g2_page", {
         user: req.user,
         error: "Please fill all required fields",
+        success: null,
       });
     }
 
     const user = await User.findById(req.user._id);
     if (!user) {
-      return res.render("error", { message: "User not found" });
+      return res.render("error", { message: "User not found", success: null });
     }
 
     user.firstname = req.body.firstName;
@@ -44,12 +44,13 @@ module.exports = async (req, res) => {
       car_details: user.car_details,
     });
 
-    res.redirect(`/g?userId=${user._id}`); // Redirect to GET /g with userId
+    res.redirect(`/g?userId=${user._id}&success=G2 data saved successfully`);
   } catch (error) {
     console.error("Error Updating G2 Data:", error);
     res.render("g2_page", {
       user: req.user,
       error: "Internal Server Error: Unable to save data",
+      success: null,
     });
   }
 };
