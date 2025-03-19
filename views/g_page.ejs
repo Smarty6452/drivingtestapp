@@ -4,116 +4,86 @@
     <%- include('layouts/header', { title: 'G Test Details' }) %>
     <link rel="stylesheet" href="/css/styles.css">
     <style>
-      /* G Form Specific Styles (matching G2) */
-      .g-form-container {
+      /* G Page Specific Styles to avoid conflicts */
+      .g-container {
         max-width: 800px;
         margin: 2rem auto;
         background: white;
         padding: 2rem;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e9ecef;
       }
 
-     
-      /* Side-by-side for large devices (lg and up) */
-      @media (min-width: 992px) {
-        .g-form-container form {
-          grid-template-columns: 1fr 1fr; /* Two columns for lg devices */
-        }
+      /* Header Styling */
+      .g-header {
+        text-align: center;
+        margin-bottom: 2rem;
       }
 
-      /* Ensure fieldsets take full width of their grid cell */
-      fieldset {
-        border: none;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem; /* Space between inputs */
+      .g-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #2c3e50;
       }
 
-      /* Legend styling */
-      legend {
-        font-size: 1.2rem;
-        font-weight: bold;
-        color: #333;
+      .g-header .subheading {
+        font-size: 1.1rem;
+        color: #7f8c8d;
+      }
+
+      /* Info Card Styling */
+      .info-card {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid #007bff;
+      }
+
+      .info-card h4 {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #34495e;
         margin-bottom: 1rem;
       }
 
-      /* Floating label styles */
-      .g-form-floating {
-        position: relative;
-      }
-
-      .g-form-control {
-        width: 100%;
-        padding: 14px 10px 10px;
-        border: 1px solid #ced4da;
-        border-radius: 5px;
+      .info-card p {
         font-size: 1rem;
-        transition: border-color 0.3s ease;
+        color: #555;
+        margin: 0.5rem 0;
+        line-height: 1.6;
       }
 
-      .g-form-control:hover {
-        border-color: #80bdff;
+      .info-card p strong {
+        color: #2c3e50;
+        font-weight: 600;
       }
 
-      .g-form-control:focus {
-        border-color: #007bff;
-        outline: none;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.3); /* Subtle glow on focus */
-      }
-
-      .g-form-floating label {
-        position: absolute;
-        top: 50%;
-        left: 10px;
-        transform: translateY(-50%);
-        font-size: 0.9rem;
-        color: #6c757d;
-        padding: 0 5px;
-        background: white;
-        transition: all 0.3s ease;
-        pointer-events: none;
-      }
-
-      .g-form-control:focus + label,
-      .g-form-control:not(:placeholder-shown) + label {
-        top: 0;
-        font-size: 0.75rem;
-        color: #007bff;
-        transform: translateY(-100%);
-      }
-
-      /* Button Styling */
-      .g-btn-primary {
+      /* Button/Link Styling */
+      .g-btn {
+        display: inline-block;
         background: #007bff;
-        border: none;
-        padding: 12px;
+        color: #fff;
+        padding: 12px 24px;
         font-size: 1rem;
-        border-radius: 5px;
-        cursor: pointer;
+        border-radius: 6px;
+        text-decoration: none;
         transition: background 0.3s ease, transform 0.2s ease;
-        width: 100%;
+        text-align: center;
       }
 
-      .g-btn-primary:hover {
+      .g-btn:hover {
         background: #0056b3;
         transform: translateY(-2px);
+        color: #fff;
       }
 
-      .g-btn-primary:active {
+      .g-btn:active {
         transform: translateY(0);
       }
 
-      @media (min-width: 992px) {
-        .g-btn-primary {
-          grid-column: 1 / -1; /* Span full width on larger screens */
-          max-width: 300px;
-          margin: 0 auto;
-        }
-      }
-
-      /* Alert styling */
+      /* Alert Styling */
       .form-alert-danger {
         background: #f8d7da;
         color: #721c24;
@@ -123,28 +93,26 @@
         text-align: center;
       }
 
-      /* Additional styles for display info */
-      .info-section {
-        margin-bottom: 2rem;
-      }
+      /* Responsive Adjustments */
+      @media (max-width: 768px) {
+        .g-container {
+          padding: 1.5rem;
+          margin: 1rem;
+        }
 
-      .info-section h4 {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #333;
-        margin-bottom: 1rem;
-      }
+        .g-header h1 {
+          font-size: 1.5rem;
+        }
 
-      .info-section p {
-        font-size: 1rem;
-        color: #6c757d;
-        margin: 0.5rem 0;
+        .info-card {
+          padding: 1rem;
+        }
       }
     </style>
   </head>
   <body>
     <%- include('layouts/nav', { user: user }) %>
-    <header class="masthead" style="background-image: url('/img/gpage.jpg')">
+    <header class="masthead" style="background-image: url('/img/gpage.jpg'); height: 80vh;">
       <div class="container position-relative px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
           <div class="col-md-10 col-lg-8 col-xl-7">
@@ -159,42 +127,28 @@
     <div class="container px-4 px-lg-5">
       <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
-          <div class="g-form-container">
+          <div class="g-container">
             <% if (user.firstname === 'default') { %>
               <div class="form-alert-danger">Please enter your details on the G2 page first.</div>
-              <a href="/g2" class="g-btn-primary" style="color: #fff; text-decoration: none; display: inline-block;">Go to G2 Page</a>
+              <a href="/g2?userId=<%= user._id %>" class="g-btn">Go to G2 Page</a>
             <% } else { %>
-              <div class="info-section">
-                <h4>Registration Details:</h4>
+              <div class="info-card">
+                <h4>Personal Information</h4>
                 <p><strong>First Name:</strong> <%= user.firstname %></p>
                 <p><strong>Last Name:</strong> <%= user.lastname %></p>
                 <p><strong>Age:</strong> <%= user.Age %></p>
                 <p><strong>License Number:</strong> <%= user.licenseNumber.slice(-4).padStart(user.licenseNumber.length, '*') %></p>
               </div>
 
-              <form action="/g/update" method="POST">
-                <input type="hidden" name="userId" value="<%= user._id %>">
-                <fieldset>
-                  <legend>Car Details</legend>
-                  <div class="g-form-floating">
-                    <input class="g-form-control" id="carMake" name="make" type="text" value="<%= user.car_details.make %>" required placeholder=" ">
-                    <label for="carMake">Car Make</label>
-                  </div>
-                  <div class="g-form-floating">
-                    <input class="g-form-control" id="carModel" name="model" type="text" value="<%= user.car_details.model %>" required placeholder=" ">
-                    <label for="carModel">Car Model</label>
-                  </div>
-                  <div class="g-form-floating">
-                    <input class="g-form-control" id="carYear" name="year" type="number" value="<%= user.car_details.year %>" required placeholder=" ">
-                    <label for="carYear">Car Year</label>
-                  </div>
-                  <div class="g-form-floating">
-                    <input class="g-form-control" id="carPlate" name="platno" type="text" value="<%= user.car_details.platno %>" required placeholder=" ">
-                    <label for="carPlate">Car Plate Number</label>
-                  </div>
-                </fieldset>
-                <button class="g-btn-primary mt-4" type="submit" style="color: #fff;">Update Car Details</button>
-              </form>
+              <div class="info-card">
+                <h4>Car Details</h4>
+                <p><strong>Make:</strong> <%= user.car_details.make %></p>
+                <p><strong>Model:</strong> <%= user.car_details.model %></p>
+                <p><strong>Year:</strong> <%= user.car_details.year %></p>
+                <p><strong>Plate Number:</strong> <%= user.car_details.platno %></p>
+              </div>
+
+              <a href="/g2?userId=<%= user._id %>" class="g-btn">Edit Details</a>
             <% } %>
           </div>
         </div>

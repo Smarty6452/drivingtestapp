@@ -4,12 +4,6 @@ const mongoose = require("mongoose");
 const app = express();
 const PORT = 4000;
 
-const path = require("path");
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
-
-app.use(express.static(path.join(__dirname, "public")));
-
 // Import controllers
 const loginController = require("./controllers/loginController");
 const signupController = require("./controllers/signupController");
@@ -32,7 +26,7 @@ app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Request handler starts here
+// Request handlers
 app.get("/", (req, res) => res.redirect("/login"));
 app.get("/login", (req, res) => res.render("loginPage", { error: null, user: null }));
 app.post("/login", loginController);
@@ -43,17 +37,12 @@ app.get("/dashboard", isAuthenticated, (req, res) => res.render("dashboard", { u
 app.get("/g2", isAuthenticatedDriver, gController);
 app.post("/g2", isAuthenticatedDriver, gController);
 app.get("/g", isAuthenticatedDriver, (req, res) => res.render("g_page", { user: req.user }));
-app.post("/g", isAuthenticatedDriver, (req, res) => res.render("g_page", { user: req.user }));
 app.post("/g2/save", isAuthenticatedDriver, registerController);
 app.post("/g/update", isAuthenticatedDriver, updateCarController);
 
-app.all("*", (req, res) => {
+app.use((req, res, next) => {
   res.status(404).render("404", { user: req.user || null });
 });
-
-// app.use((req, res, next) => {
-//   res.status(404).render("404", { user: req.user || null });
-// });
 
 // Start the server
 app.listen(PORT, () => {

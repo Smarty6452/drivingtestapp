@@ -6,7 +6,6 @@ const loginController = async (req, res) => {
   const user = await User.findOne({ username });
 
   if (!user || !(await bcrypt.compare(password, user.password))) {
-    // Redirect to login with an error query parameter
     return res.redirect("/login?error=Invalid username or password");
   }
 
